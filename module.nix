@@ -180,6 +180,14 @@ in
       phocConfig.outputs.DSI-1.scale = 3;
     };
 
+    users.extraUsers."${user}".extraGroups = [
+      "dialout"
+      "feedbackd"
+      "input" # needed for haptics
+      "networkmanager"
+      "video"
+    ];
+
     nix.distributedBuilds = true;
 
     documentation.enable = false;
