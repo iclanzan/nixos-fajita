@@ -27,6 +27,8 @@ in
   };
 
   config = lib.mkIf config.oneplus-fajita.enable {
+    nixpkgs.overlays = [ (import ./pkgs) ];
+
     boot.initrd.unl0kr = {
       enable = true;
       settings = {
@@ -164,6 +166,10 @@ in
       wl-clipboard
     ];
 
+    nixpkgs.config.permittedInsecurePackages = [
+      "olm-3.2.16" # indirect dependency of chatty
+    ];
+
     services.flatpak.enable = true;
 
     programs.calls.enable = true;
@@ -180,13 +186,14 @@ in
       phocConfig.outputs.DSI-1.scale = 3;
     };
 
-    users.extraUsers."${user}".extraGroups = [
+    users.users."${user}".extraGroups = [
       "dialout"
       "feedbackd"
       "input" # needed for haptics
       "networkmanager"
       "video"
     ];
+    users.mutableUsers = false;
 
     nix.distributedBuilds = true;
 

@@ -1,8 +1,8 @@
 # Taken from https://gitlab.postmarketos.org/postmarketOS/swclock-offset
-{ config, ... }:
+{ ... }:
 let
   rtc_sys_node = "/sys/class/rtc/rtc0/since_epoch";
-  offset_directory = "${config.xxx.persist.path}/cache/swclock-offset";
+  offset_directory = "/persist/cache/swclock-offset";
   offset_file = "${offset_directory}/offset-storage";
 in
 {

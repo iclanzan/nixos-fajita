@@ -110,6 +110,10 @@ in
   ];
   boot.initrd.includeDefaultModules = false;
   boot.initrd.systemd.tpm2.enable = false;
+
+  # Our custom kernel config is missing a lot of modules
+  boot.initrd.allowMissingModules = true;
+
   boot.initrd.kernelModules = [
     "qcom_pd_mapper"
     "sd_mod"
@@ -145,8 +149,23 @@ in
   ];
   hardware.enableRedistributableFirmware = true;
 
-  services.pipewire.alsa.support32Bit = false;
+  services.pulseaudio.enable = false;
+
+  services.pipewire = {
+    enable = true;
+    pulse.enable = true;
+    jack.enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = false;
+    };
+  };
+
+  # Allows pipewire to acquire realtime priority
+  security.rtkit.enable = true;
+
   hardware.graphics.enable32Bit = false;
+  hardware.bluetooth.enable = true;
 
   hardware.sensor.iio = {
     enable = true;
@@ -208,7 +227,7 @@ in
       ];
     };
   };
-  services.udev.extraRules = lib.unlines [
+  services.udev.extraRules = builtins.concatStringsSep "\n" [
     # iio-sensor-proxy with libssc: accelerometer mount matrix
     ''SUBSYSTEM=="misc", KERNEL=="fastrpc-*", ENV{ACCEL_MOUNT_MATRIX}+="-1, 0, 0; 0, 1, 0; 0, 0, -1"''
     # iio-sensor-proxy with libssc: enable sensors
@@ -269,7 +288,7 @@ in
     linux-kernel.installTarget = "zinstall";
   };
 
-  boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (pkgs.callPackage ./kernel.nix { }));
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.callPackage ./kernel.nix { });
 
   # Boot entries are too long; try to shorten them
   system.nixos.label = "";
