@@ -24,6 +24,7 @@ mkScript "fajita-install" /* bash */ ''
 
   if (( $# < 3 )); then
     printf "Usage: %s <flake> <target-device> <encryption-password>\n" "$0"
+    printf "Example: %s .#fajita /dev/sda 123123\n" "$0"
     exit 1
   fi
 
