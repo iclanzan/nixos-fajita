@@ -48,5 +48,7 @@ let
 in
 {
   mkEnvWrapper = mkEnvWrapper;
+  mkScript = mkScript;
+  fajita-install = self.callPackage ./fajita-install.nix { };
   firefox-mobile = self.callPackage ./firefox-mobile.nix { };
 }

@@ -13,21 +13,31 @@
   outputs =
     { nixpkgs, ... }@inputs:
     let
+      x86Pkgs = import inputs.nixpkgs {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+        overlays = [ (import ./pkgs) ];
+      };
       aarch64Pkgs = import inputs.nixpkgs {
         system = "aarch64-linux";
         config.allowUnfree = true;
+        overlays = [ (import ./pkgs) ];
       };
 
-      ubootPkgs = {
-        uboot-img = aarch64Pkgs.callPackage ./uboot.nix { };
-      };
+      uboot-img = aarch64Pkgs.callPackage ./uboot.nix { };
 
       module = import ./module.nix inputs;
     in
     {
       packages = {
-        x86_64-linux = ubootPkgs;
-        aarch64-linux = ubootPkgs;
+        x86_64-linux = {
+          uboot-img = uboot-img;
+          fajita-install = x86Pkgs.callPackage ./pkgs/fajita-install.nix { };
+        };
+        aarch64-linux = {
+          uboot-img = uboot-img;
+          fajita-install = aarch64Pkgs.callPackage ./pkgs/fajita-install.nix { };
+        };
       };
 
       nixosModules.default = module;
