@@ -1,10 +1,16 @@
 # NixOS on OnePlus 6T
 
-This repository exposes a Nix flake that allows you to quickly get NixOS up and running on a OnePlus 6T with full-disk encryption, impermanence and Phosh.
+This repository exposes a Nix flake that allows you to quickly get NixOS up and running on a _OnePlus 6T_ with full-disk encryption, impermanence and _Phosh_.
 
 ## Getting started
 
-Having acquired a OnePlus 6T, the first objective is to unlock the bootloader:
+### Requirements
+
+- a _OnePlus 6T_ phone
+- a _build host_, an `aarch64` device with [Nix](https://nixos.org/download/#download-nix) installed
+- USB-C cable for connecting the phone to the _build host_
+
+Having acquired a _OnePlus 6T_, the first objective is to unlock the bootloader:
 
 - On Android open Settings, go to "About" and tap on the "Build number" box 10 times until the "You are now a developer" message appears.
 - Go back to Settings, then go to "System" and then "Developer options" and toggle on "Enable OEM unlocking".
@@ -25,11 +31,11 @@ Next install U-Boot as a (chained) bootloader:
 
 Enter U-Boot _mass storage mode_:
 
-- Connected phone to another `aarch64` device already running NixOS
+- Connect the phone to the _build host_
 - Hold _Volume down_ while booting phone to enter U-Boot menu
-- Select "Enter mass storage mode"
+- Select “Enter mass storage mode”
 
-Install NixOS on the phone from the device already running NixOS:
+Install NixOS on the phone from the _build host_:
 
 - Run `lsblk` and identify the phone storage (e.g. `/dev/sda`)
 - Build installer script from this repository
@@ -42,7 +48,7 @@ Install NixOS on the phone from the device already running NixOS:
   ./result/fajita-install/bin/fajita-install .#fajita /dev/sda "$password"
   ```
 
-Done! You can now reboot into your NixOS on OnePlus 6T and log in with the password `123000`. Root has the same password and can be accessed over SSH so you can further customize your NixOS installation.
+Done! You can now reboot into your NixOS on _OnePlus 6T_ and log in with the password `123000`. Root has the same password and can be accessed over SSH so you can further customize your NixOS installation.
 
 ## Known issues
 
