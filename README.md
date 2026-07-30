@@ -59,4 +59,5 @@ Done! You can now reboot into your NixOS on _OnePlus 6T_ and log in with the pas
 - Mobile data sometimes stops working; toggling it from _Quick Settings_ restores connectivity.
 - Bluetooth sometimes stops working and requires a device reboot.
 - Every now and then Phosh enters a broken state where you can still drag the top bar drawer but nothing else works; requires a hard reset.
+- Phone shows as charging sometimes 10+ minutes after unplugging the charger; even after a reboot.
 - `nixos-rebuild switch` always causes Phosh to restart; sometimes it fails to restart but can be started remotely (`systemctl start phosh`).
